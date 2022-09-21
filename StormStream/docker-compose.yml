@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+
+  postgres_after:
+    image: postgres
+    restart: always
+    build:
+      context: ./storm
+    environment:
+      - DATABASE_HOST=localhost
+      - POSTGRES_USER=storm
+      - POSTGRES_PASSWORD=storm
+      - POSTGRES_DB=endpoint
+    volumes:
+      - D:\storm\bd:/storm/bd/data
+    ports: 
+      - "5436:5432"
+    networks:
+      - postgres-network
+
+
+  pgadmin_storm:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    build:
+      context: ./storm
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=storm@ufpr.br
+      - PGADMIN_DEFAULT_PASSWORD=storm
+    volumes:
+      - D:\storm\bd:/storm/bd/data
+    networks:
+      - postgres-network
+    depends_on:
+      - postgres_before
+      - postgres_after
+
+networks:
+
+  postgres-network:
+    external: true  

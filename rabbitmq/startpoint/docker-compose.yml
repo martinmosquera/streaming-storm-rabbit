@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+
+  startpoint:
+    build: startpoint
+    restart: always
+    build:
+      context: .
+    ports: 
+      - "2710:2710"
